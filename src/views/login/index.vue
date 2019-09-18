@@ -39,11 +39,12 @@
 export default {
   data () {
     let validator = function (rule, value, callback) {
-      if (value) {
-        callback()
-      } else {
-        callback(new Error('请勾选相关条款'))
-      }
+    //   if (value) {
+    //     callback()
+    //   } else {
+    //     callback(new Error('请勾选相关条款'))
+    //   }
+      value ? callback() : callback(new Error('请勾选相关条款'))
     }
     return {
       formData: {
@@ -80,9 +81,22 @@ export default {
       // validate是一个方法
       // 方法中传入的一个函数
       // 两个校验参数  是否校验成功/未校验成功的字段
-      this.$refs.loginForm.validate(function (isOk) {
+      this.$refs.loginForm.validate(isOk => {
         if (isOk) {
-          console.log('校验成功')
+          this.$http({
+            url: '/authorizations',
+            method: 'post',
+            data: this.formData
+          }).then(res => {
+            console.log(res)
+            window.localStorage.setItem('user-token', res.data.data.token)
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              message: '您的手机号或者验证码有误哦',
+              type: 'warning'
+            })
+          })
         }
       })
     }
