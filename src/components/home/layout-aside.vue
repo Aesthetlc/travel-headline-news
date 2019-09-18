@@ -4,11 +4,11 @@
       <img src="../../assets/img/logo_admin.png" alt />
     </div>
     <el-menu
-      class="el-menu-vertical-demo"
+      style="width:201px"
       background-color="#353b4e"
       text-color="#adafb5"
-      active-text-color="#ffd04b"
-    >
+      active-text-color="#ffd04b">
+
       <el-menu-item index="1">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
