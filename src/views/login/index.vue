@@ -22,12 +22,11 @@
             <el-button style="float:right;width:28%">发送验证码</el-button>
           </el-form-item>
           <el-form-item prop="agree">
-            <el-checkbox v-model="formData.agree">
-              <span>我已阅读并同意</span>
-              <a>用户协议</a>
-              <span>和</span>
-              <a>隐私条款</a>
-            </el-checkbox>
+            <el-checkbox v-model="formData.agree"></el-checkbox>
+            <span>&nbsp;&nbsp;我已阅读并同意</span>
+            <a>用户协议</a>
+            <span>和</span>
+            <a>隐私条款</a>
           </el-form-item>
           <el-form-item>
             <el-button @click="loginForm()" type="primary" style="width:100%">登录</el-button>
@@ -35,9 +34,19 @@
         </el-form>
       </el-card>
     </div>
-    <video autoplay loop muted v-on:canplay="canplay">
+    <!--
+      autoplay 自动播放
+      loop 循环播放
+      muted 静音
+    -->
+    <video autoplay loop muted>
       <source src="../../assets/video/beach.mp4" type="video/mp4" />浏览器不支持 video 标签，建议升级浏览器。
     </video>
+    <audio
+      autoplay
+      loop
+      src="https://m701.music.126.net/20190920010914/d42b8db805cc47bae7779d1ca5f193a8/jdyyaac/030b/545f/0758/4a539176f6c58a87cea502b336d7f29b.m4a"
+    >你的浏览器不支持audio标签</audio>
   </div>
 </template>
 
@@ -53,7 +62,6 @@ export default {
       value ? callback() : callback(new Error('请勾选相关条款'))
     }
     return {
-      vedioCanPlay: false,
       formData: {
         mobile: '',
         code: '',
@@ -84,9 +92,6 @@ export default {
     }
   },
   methods: {
-    canplay () {
-      this.vedioCanPlay = true
-    },
     loginForm () {
       // validate是一个方法
       // 方法中传入的一个函数
@@ -97,11 +102,12 @@ export default {
             url: '/authorizations',
             method: 'post',
             data: this.formData
-          }).then(res => {
-            console.log(res)
-            window.localStorage.setItem('user-token', res.data.data.token)
-            this.$router.push('/home')
           })
+            .then(res => {
+              console.log(res)
+              window.localStorage.setItem('user-token', res.data.data.token)
+              this.$router.push('/home')
+            })
             .catch(() => {
               this.$message({
                 message: '您的手机号或者验证码有误哦',
