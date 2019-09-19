@@ -58,7 +58,7 @@ export default {}
     padding: 15px 0px;
     background-color: #2e2f32;
     img {
-      height: 30px;
+      height: 45px;
     }
   }
 }
