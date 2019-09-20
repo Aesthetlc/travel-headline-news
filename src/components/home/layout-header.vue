@@ -2,7 +2,7 @@
   <el-row justify="space-between" type="flex" class="layout-header">
     <el-col :span="10">
       <i class="el-icon-star-on"></i>
-      <span class="title-header">弘扬红色文化，打造精品旅游共享服务平台！</span>
+      <span class="title-header" style="font-family:simhei">弘扬红色文化，打造精品旅游共享服务平台！</span>
     </el-col>
     <el-col :span="3" class="userinfo">
       <span>消息</span>
@@ -68,10 +68,10 @@ export default {
 .layout-header {
   line-height: 50px;
   .title-header,
-  .el-icon-document {
+  .el-icon-star-on {
     font-size: 20px;
   }
-  .el-icon-document {
+  .el-icon-star-on {
     margin-right: 4px;
   }
   .userinfo img {
