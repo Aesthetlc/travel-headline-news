@@ -36,7 +36,7 @@ export default {
     this.$http({
       url: '/user/profile'
     }).then(result => {
-      this.formData = result.data.data
+      this.formData = result.data
     })
   },
   methods: {
