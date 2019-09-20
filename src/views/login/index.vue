@@ -106,7 +106,6 @@ export default {
             data: this.formData
           })
             .then(res => {
-              console.log(res)
               window.localStorage.setItem('user-token', res.data.data.token)
               this.$router.push('/home')
             })
