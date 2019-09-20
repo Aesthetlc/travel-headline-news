@@ -1,8 +1,8 @@
 <template>
   <el-row justify="space-between" type="flex" class="layout-header">
     <el-col :span="10">
-      <i class="el-icon-document"></i>
-      <span class="title-header">江苏传智播客教育科技股份有限公司</span>
+      <i class="el-icon-star-on"></i>
+      <span class="title-header">弘扬红色文化，打造精品旅游共享服务平台！</span>
     </el-col>
     <el-col :span="3" class="userinfo">
       <span>消息</span>
