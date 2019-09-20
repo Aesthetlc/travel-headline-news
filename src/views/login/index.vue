@@ -42,11 +42,13 @@
     <video autoplay loop muted>
       <source src="../../assets/video/beach.mp4" type="video/mp4" />浏览器不支持 video 标签，建议升级浏览器。
     </video>
-    <audio
-      autoplay
-      loop
-      src="https://m701.music.126.net/20190920010914/d42b8db805cc47bae7779d1ca5f193a8/jdyyaac/030b/545f/0758/4a539176f6c58a87cea502b336d7f29b.m4a"
-    >你的浏览器不支持audio标签</audio>
+    <!--
+       preload="load" //页面加载完之后播放
+       autoplay //自动播放
+       loop   //循环播放
+       controls  //显示控制音乐控件
+    -->
+    <audio preload="load" autoplay loop src="http://music.163.com/song/media/outer/url?id=476987525.mp3">你的浏览器不支持audio标签</audio>
   </div>
 </template>
 
