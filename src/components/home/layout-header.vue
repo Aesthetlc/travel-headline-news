@@ -33,10 +33,8 @@ export default {
   },
   created () {
     // 获取token，这个token在登录的时候已经存放到了localstory中
-    let token = window.localStorage.getItem('user-token')
     this.$http({
-      url: '/user/profile',
-      headers: { Authorization: `Bearer ${token}` }
+      url: '/user/profile'
     }).then(result => {
       this.formData = result.data.data
     })
