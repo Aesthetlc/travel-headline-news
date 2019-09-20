@@ -12,8 +12,8 @@ export default {
 
 <style scoped>
 div{
-    background-color: rgb(242, 243, 245);
-    /* background:url('../../assets/img/welcome.png'); */
+    /* background-color: rgb(242, 243, 245); */
+    background:url('../../assets/img/welcome.jpg');
     height: 100vh;
     background-size: cover;
 }
