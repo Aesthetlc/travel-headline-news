@@ -1,6 +1,6 @@
 <template>
   <!-- 面包屑区域 -->
-  <el-card>
+  <el-card  v-loading="loading">
     <!-- header 是card的插槽 -->
     <layout-Crumb slot="header">
       <!-- title 是自己定义的全局面包屑的插槽 -->
@@ -34,6 +34,18 @@
       </el-table-column>
     </el-table>
     <!-- 表格区域 -->
+    <!-- 分页显示 -->
+    <el-row type="flex" justify="center">
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="changeNum"
+          :page-size="pages.per_page"
+          layout="prev, pager, next, jumper"
+          :total="pages.total_count"
+        ></el-pagination>
+      </div>
+    </el-row>
   </el-card>
 </template>
 
@@ -41,17 +53,38 @@
 export default {
   data () {
     return {
-      tableData: []
+      tableData: [],
+      pages: {
+        per_page: 10, // 每页数量
+        page: 1, // 当前页数
+        total_count: 0 // 总条数
+      },
+      loading: false // 是否显示加载
     }
   },
   methods: {
+    handleSizeChange (newPage) {
+      this.pages.page = newPage
+      this.getComment()
+    },
+    changeNum (newPage) {
+      this.pages.page = newPage
+      this.getComment()
+    },
     // 获取评论数据
     getComment () {
+      this.loading = true
       this.$http({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: {
+          response_type: 'comment',
+          page: this.pages.page,
+          per_page: this.pages.per_page
+        }
       }).then(result => {
         this.tableData = result.data.results
+        this.pages.total_count = result.data.total_count // 总数
+        this.loading = false
       })
     },
     // 这个位置是为了将返回的boolean值的评论状态改为打开或者关闭
@@ -91,4 +124,7 @@ export default {
 </script>
 
 <style>
+.block {
+  margin-top: 20px;
+}
 </style>
