@@ -3,33 +3,32 @@ import Router from 'vue-router'
 import Home from './views/home'
 import Login from './views/login'
 import Main from './views/home/main'
-import Comment from './views/comment'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/home'
+  routes: [{
+    path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/home',
+    component: Home,
+    children: [{
+      path: '',
+      component: Main
     },
+    // 实现按需加载
     {
-      path: '/login',
-      component: Login
-    },
-    {
-      path: '/home',
-      component: Home,
-      children: [
-        {
-          path: '',
-          component: Main
-        }, {
-          path: 'comment',
-          component: Comment
-        }
-      ]
+      path: 'comment',
+      component: () => import('./views/comment')
     }
+    ]
+  }
     // {
     //   path: '/about',
     //   name: 'about',
