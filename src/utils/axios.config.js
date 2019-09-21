@@ -1,11 +1,14 @@
 // 给所有的请求携带token
 import axios from 'axios'
 import router from '../permission'
-import {
-  Message
-} from 'element-ui'
+import jsonbig from 'json-bigint'
+import { Message } from 'element-ui'
 // 设置baseURL
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
+// 使用jsonbig 保证数字过大不失真
+axios.defaults.transformResponse = [function (data) {
+  return jsonbig.parse(data)
+}]
 
 // 请求拦截
 axios.interceptors.request.use(function (config) {
