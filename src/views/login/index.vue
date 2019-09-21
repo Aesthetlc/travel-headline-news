@@ -116,8 +116,8 @@ export default {
 }
 </script>
 
-<style>
-.el-form-item__error {
+<style lang="less" scoped>
+ /deep/ .el-form-item__error {
   font-size: 14px !important;
   color: yellow !important;
 }
