@@ -1,6 +1,6 @@
 // 给所有的请求携带token
 import axios from 'axios'
-import router from '../router'
+import router from '../permission'
 import {
   Message
 } from 'element-ui'
