@@ -22,10 +22,15 @@ export default new Router({
       path: '',
       component: Main
     },
-    // 实现按需加载
+    // 实现按需加载(评论详情)
     {
       path: 'comment',
       component: () => import('./views/comment')
+    },
+    // 实现按需加载(素材管理)
+    {
+      path: 'material',
+      component: () => import('./views/material')
     }
     ]
   }
