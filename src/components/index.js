@@ -7,6 +7,6 @@ export default {
   install (Vue) {
     Vue.component('layout-aside', layoutAside)
     Vue.component('layout-header', layoutHeader)
-    Vue.component('layout-Crumb', breadCrumb)
+    Vue.component('bread-crumb', breadCrumb)
   }
 }
