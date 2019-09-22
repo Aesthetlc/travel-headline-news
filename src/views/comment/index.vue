@@ -2,10 +2,10 @@
   <!-- 面包屑区域 -->
   <el-card  v-loading="loading">
     <!-- header 是card的插槽 -->
-    <layout-Crumb slot="header">
+    <bread-crumb slot="header">
       <!-- title 是自己定义的全局面包屑的插槽 -->
       <span slot="title" style="font-weight:700;color:black">评论列表</span>
-    </layout-Crumb>
+    </bread-crumb>
 
     <!-- 表格区域 -->
     <el-table :data="tableData" stripe style="width: 100%">
@@ -35,16 +35,14 @@
     </el-table>
     <!-- 表格区域 -->
     <!-- 分页显示 -->
-    <el-row type="flex" justify="center">
-      <div class="block">
+    <el-row type="flex" justify="center" style="margin:20px 0">
         <el-pagination
-          @size-change="handleSizeChange"
+          @size-change="changeNum"
           @current-change="changeNum"
           :page-size="pages.per_page"
           layout="prev, pager, next, jumper"
           :total="pages.total_count"
         ></el-pagination>
-      </div>
     </el-row>
   </el-card>
 </template>
@@ -124,7 +122,4 @@ export default {
 </script>
 
 <style>
-.block {
-  margin-top: 20px;
-}
 </style>
