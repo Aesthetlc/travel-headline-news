@@ -31,6 +31,11 @@ export default new Router({
     {
       path: 'material',
       component: () => import('./views/material')
+    },
+    // 实现按需加载(内容列表)
+    {
+      path: 'articles',
+      component: () => import('./views/articles')
     }
     ]
   }
