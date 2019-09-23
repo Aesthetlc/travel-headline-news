@@ -100,7 +100,7 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(reult => {
+      }).then(() => {
         this.$http({
           url: '/comments/status',
           method: 'put',
