@@ -13,8 +13,8 @@
         <el-card class="img-card" v-for="item in imglist" :key="item.id">
           <img :src="item.url" alt />
           <div class="operate">
-            <i :style='{ color:item.is_collected?"red":"#000"}' class="el-icon-star-on"></i>
-            <i class="el-icon-delete-solid"></i>
+            <i @click="collectAndNoCollect(item)" :style='{ color:item.is_collected?"red":"#000"}' class="el-icon-star-on"></i>
+            <i @click="delImg(item.id)" class="el-icon-delete-solid"></i>
           </div>
         </el-card>
       </div>
@@ -57,6 +57,37 @@ export default {
     }
   },
   methods: {
+    // 取消收藏与收藏的方法
+    collectAndNoCollect (item) {
+      let status = item.is_collected ? '取消收藏' : '添加收藏'
+      this.$confirm(`您要${status}此素材么？`).then(() => {
+        this.$http({
+          url: `/user/images/${item.id}`,
+          method: 'put',
+          data: {
+            collect: !item.is_collected
+          }
+        }).then(result => {
+          this.$message({ message: `${status}成功`, type: 'success' })
+          this.getImg()
+        })
+      })
+    },
+    // 删除图片素材的方法
+    // 删除是没有返回值的，这里会报错实际上已经删除了，
+    // 解决方法就是在axios.config.js文件上处理bigNumber大数据的时候增加一个为空的判断
+    delImg (id) {
+      this.$confirm('您确定要删除此素材么?').then(() => {
+        this.$http({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(result => {
+          this.$message({ message: `素材删除成功`, type: 'success' })
+          this.getImg()
+        })
+      })
+    },
+    // 上传图片的方法
     uploadImg (params) {
       let data = new FormData()
       data.append('image', params.file)
@@ -69,15 +100,18 @@ export default {
         this.getImg()
       })
     },
+    // 分页点击切换的时候的方法
     changeNum (newPage) {
       this.pages.page = newPage
       this.getImg()
     },
+    // 切换tabs的时候的方法
     handleClick () {
       // 切换的时候需要将当前页变为1页码
       this.pages.page = 1
       this.getImg()
     },
+    // 获取素材图片的方法
     getImg () {
       this.loading = true
       // this.activeName === 'collect' ==>true====>显示全部图片
@@ -130,6 +164,7 @@ export default {
       .el-icon-star-on,
       .el-icon-delete-solid {
         font-size: 22px;
+        cursor: pointer;
       }
     }
   }

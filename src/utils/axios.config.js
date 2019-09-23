@@ -7,7 +7,7 @@ import { Message } from 'element-ui'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 // 使用jsonbig 保证数字过大不失真
 axios.defaults.transformResponse = [function (data) {
-  return jsonbig.parse(data)
+  return data ? jsonbig.parse(data) : {}
 }]
 
 // 请求拦截
