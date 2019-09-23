@@ -88,17 +88,12 @@ export default {
       pages: {
         total: 0, // 总条数
         perPage: 10, // 每页显示几条 默认10条
-        currentPage: 1// 当前第几页 默认第一页
-
+        currentPage: 1 // 当前第几页 默认第一页
       }, // 页数相关
       channelsList: [] // 存放频道
     }
   },
   methods: {
-    changeNum (newPage) {
-      this.pages.currentPage = newPage
-      this.getScreenMsg()
-    },
     // 删除文章
     delMsg (id) {
       this.$confirm('您确定要删除此文章么？').then(() => {
@@ -111,6 +106,14 @@ export default {
         })
       })
     },
+    // 查询频道
+    getChannelMsg () {
+      this.$http({
+        url: '/channels'
+      }).then(result => {
+        this.channelsList = result.data.channels
+      })
+    },
     // 获得文章总数据
     getArticles (params) {
       this.$http({
@@ -120,11 +123,6 @@ export default {
         this.list = result.data.results
         this.pages.total_count = result.data.total_count
       })
-    },
-    // 获得筛选之后的数据
-    changeCondition () {
-      this.pages.currentPage = 1
-      this.getScreenMsg()
     },
     // 待条件查询的
     getScreenMsg () {
@@ -140,15 +138,18 @@ export default {
       }
       this.getArticles(params)
     },
-    // 查询频道
-    getChannelMsg () {
-      this.$http({
-        url: '/channels'
-      }).then(result => {
-        this.channelsList = result.data.channels
-      })
+    // 点击切换分页的时候执行
+    changeNum (newPage) {
+      this.pages.currentPage = newPage
+      this.getScreenMsg()
+    },
+    // 获得筛选之后的数据
+    changeCondition () {
+      this.pages.currentPage = 1
+      this.getScreenMsg()
     }
   },
+  // 初始化执行
   created () {
     this.getArticles()
     this.getChannelMsg()
