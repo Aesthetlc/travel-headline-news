@@ -1,6 +1,6 @@
 <template>
   <!-- 面包屑 -->
-  <el-card>
+  <el-card v-loading="loading">
     <bread-crumb slot="header">
       <span slot="title">素材管理</span>
     </bread-crumb>
@@ -8,9 +8,8 @@
       <el-button  type="primary" >上传素材</el-button>
     </el-upload>
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="全部素材" name="all"></el-tab-pane>
-      <el-tab-pane label="收藏素材" name="collect"></el-tab-pane>
-      <div class="img-list">
+      <el-tab-pane label="全部素材" name="all">
+        <div class="img-list">
         <el-card class="img-card" v-for="item in imglist" :key="item.id">
           <img :src="item.url" alt />
           <div class="operate">
@@ -19,6 +18,14 @@
           </div>
         </el-card>
       </div>
+      </el-tab-pane>
+      <el-tab-pane label="收藏素材" name="collect">
+        <div class="img-list">
+        <el-card class="img-card" v-for="item in imglist" :key="item.id">
+          <img :src="item.url" alt />
+        </el-card>
+      </div>
+      </el-tab-pane>
     </el-tabs>
 
     <!-- 分页 -->
@@ -27,6 +34,7 @@
         @size-change="changeNum"
         @current-change="changeNum"
         :page-size="pages.per_page"
+        :current-page.sync="pages.page"
         layout="prev, pager, next, jumper"
         :total="pages.total_count"
       ></el-pagination>
@@ -44,7 +52,8 @@ export default {
         per_page: 20, // 每页数量
         page: 1, // 当前页数
         total_count: 0 // 总条数
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -70,6 +79,7 @@ export default {
       this.getImg()
     },
     getImg () {
+      this.loading = true
       // this.activeName === 'collect' ==>true====>显示全部图片
       // this.activeName === 'collect' ==>false====>显示收藏图片
       this.$http({
@@ -82,6 +92,7 @@ export default {
       }).then(result => {
         this.imglist = result.data.results
         this.pages.total_count = result.data.total_count
+        this.loading = false
       })
     }
   },
