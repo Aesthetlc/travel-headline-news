@@ -4,7 +4,13 @@
     <bread-crumb slot="header">
       <span slot="title" style="font-weight:700;color:black">发布文章</span>
     </bread-crumb>
-    <el-form :model="formData" :rules="rules" ref="form" style="margin-left:100px" label-width="100px">
+    <el-form
+      :model="formData"
+      :rules="rules"
+      ref="form"
+      style="margin-left:100px"
+      label-width="100px"
+    >
       <el-form-item label="标题" prop="title">
         <el-input style="width:400px" v-model="formData.title" placeholder="文章名称"></el-input>
       </el-form-item>
@@ -56,9 +62,8 @@ export default {
           { required: true, message: '标题不能为空' },
           { min: 5, max: 30, message: '标题的长度应为5到30位' }
         ],
-        channel_id: [
-          { required: true, message: '频道不能为空' }
-        ]
+        content: [{ required: true, message: '内容不能为空' }],
+        channel_id: [{ required: true, message: '频道不能为空' }]
       }
     }
   },
@@ -82,15 +87,17 @@ export default {
     // 发表文章
     publishArticle (draft) {
       this.$refs.form.validate(isOk => {
-        let { articleId } = this.$route.params
-        this.$http({
-          url: articleId ? `/articles/${articleId}` : '/articles',
-          method: articleId ? 'PUT' : 'POST',
-          params: { draft }, // （true 为草稿）（false为发布）
-          data: this.formData
-        }).then(result => {
-          this.$router.push('/home/articles')
-        })
+        if (isOk) {
+          let { articleId } = this.$route.params
+          this.$http({
+            url: articleId ? `/articles/${articleId}` : '/articles',
+            method: articleId ? 'PUT' : 'POST',
+            params: { draft }, // （true 为草稿）（false为发布）
+            data: this.formData
+          }).then(result => {
+            this.$router.push('/home/articles')
+          })
+        }
       })
     }
   },
@@ -98,7 +105,7 @@ export default {
     this.getChannelMsg()
     // 获取文章id
     let { articleId } = this.$route.params
-    articleId && this.getPublishById(articleId)// 如果有id执行后面的方法
+    articleId && this.getPublishById(articleId) // 如果有id执行后面的方法
   }
 }
 </script>
