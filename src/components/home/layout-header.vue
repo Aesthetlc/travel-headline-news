@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -32,14 +33,20 @@ export default {
     }
   },
   created () {
-    // 获取token，这个token在登录的时候已经存放到了localstory中
-    this.$http({
-      url: '/user/profile'
-    }).then(result => {
-      this.formData = result.data
+    this.getUserMsg()
+    // 这个位置是为了个人信息页面修改，随之这里跟着更新
+    eventBus.$on('getUserInfo', () => {
+      this.getUserMsg()
     })
   },
   methods: {
+    getUserMsg () {
+      this.$http({
+        url: '/user/profile'
+      }).then(result => {
+        this.formData = result.data
+      })
+    },
     handleCommand (key) {
       if (key === 'userinfo') {
       } else if (key === 'gitaddress') {
@@ -71,7 +78,7 @@ export default {
   }
   .el-icon-star-on {
     margin-right: 4px;
-    color:red;
+    color: red;
   }
   .userinfo img {
     width: 35px;
