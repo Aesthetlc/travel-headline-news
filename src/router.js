@@ -36,6 +36,21 @@ export default new Router({
     {
       path: 'articles',
       component: () => import('./views/articles')
+    },
+    // 实现按需加载(发布文章)
+    {
+      path: 'publish',
+      component: () => import('./views/publish')
+    },
+    // 实现按需加载(修改文章)
+    {
+      path: 'publish/:articleId',
+      component: () => import('./views/publish')
+    },
+    // 实现按需加载(个人信息)
+    {
+      path: 'userinfo',
+      component: () => import('./views/userinfo')
     }
     ]
   }

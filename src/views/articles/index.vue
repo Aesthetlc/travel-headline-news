@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="right-content">
-          <i class="el-icon-edit">修改</i>
+          <i @click="goPublish(item.id)" class="el-icon-edit">修改</i>
           <i @click="delMsg(item.id)" class="el-icon-delete">删除</i>
         </div>
       </div>
@@ -94,6 +94,10 @@ export default {
     }
   },
   methods: {
+    // 编辑文章
+    goPublish (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     // 删除文章
     delMsg (id) {
       this.$confirm('您确定要删除此文章么？').then(() => {
