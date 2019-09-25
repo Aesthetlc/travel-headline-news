@@ -18,12 +18,13 @@
         <quill-editor v-model="formData.content" style="height:400px"></quill-editor>
       </el-form-item>
       <el-form-item label="封页" style="margin-top:80px" prop="cover">
-        <el-radio-group v-model="formData.cover.type">
+        <el-radio-group v-model="formData.cover.type" @change="changeType">
           <el-radio :label="1">单选</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
+        <cover-image :imagesLength="formData.cover.images" @receiveImgUrl="getSelectImgUrl"></cover-image>
       </el-form-item>
       <el-form-item label="频道" prop="channel_id">
         <el-select v-model="formData.channel_id" placeholder="请选择">
@@ -57,6 +58,7 @@ export default {
         content: '',
         title: ''
       },
+      // 校验，以及正则校验
       rules: {
         title: [
           { required: true, message: '标题不能为空' },
@@ -68,6 +70,28 @@ export default {
     }
   },
   methods: {
+    // 获取从select->cover->传过来的url
+    getSelectImgUrl (url, index) {
+      // this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+      //   if (i === index) {
+      //     return url
+      //   } else {
+      //     return item
+      //   }
+      // })
+      // 以下写法是优化之后的写法
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+    },
+    // 更具点击的类型 修改数据image的长度
+    changeType () {
+      if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']
+      } else {
+        this.formData.cover.images = []
+      }
+    },
     // 获取从文章列表传过来的详细文章信息
     getPublishById (articleId) {
       this.$http({
