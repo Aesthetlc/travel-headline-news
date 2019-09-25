@@ -49,6 +49,7 @@ export default {
     },
     handleCommand (key) {
       if (key === 'userinfo') {
+        this.$router.push('/home/userinfo')
       } else if (key === 'gitaddress') {
         window.location.href =
           'https://github.com/Aesthetlc/travel-headline-news.git'
