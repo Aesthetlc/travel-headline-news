@@ -16,6 +16,10 @@ export default new Router({
     redirect: '/home'
   },
   {
+    path: '*',
+    component: () => import('./views/404')
+  },
+  {
     path: '/login',
     component: Login
   },
@@ -55,6 +59,10 @@ export default new Router({
     {
       path: 'userinfo',
       component: () => import('./views/userinfo')
+    },
+    {
+      path: '*',
+      component: () => import('./views/404')
     }
     ]
   }
