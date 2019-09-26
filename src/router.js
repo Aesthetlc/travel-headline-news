@@ -15,6 +15,7 @@ export default new Router({
     path: '/',
     redirect: '/home'
   },
+  // 一级路由404配置
   {
     path: '*',
     component: () => import('./views/404')
@@ -60,6 +61,12 @@ export default new Router({
       path: 'userinfo',
       component: () => import('./views/userinfo')
     },
+    // 实现按需加载(图文加载)
+    {
+      path: 'grapdata',
+      component: () => import('./views/fans/grapdata')
+    },
+    // 404二级路由配置
     {
       path: '*',
       component: () => import('./views/404')
