@@ -88,7 +88,6 @@ export default {
     },
     // 编辑用户信息
     editUserInfo () {
-      this.loading = true
       this.$refs.form.validate(isOk => {
         if (isOk) {
           this.$http({
@@ -98,8 +97,6 @@ export default {
           }).then(() => {
             eventBus.$emit('getUserInfo')
             this.$message({ message: '更新成功', type: 'success' })
-            this.getUserInfo()
-            this.loading = false
           })
         }
       })
