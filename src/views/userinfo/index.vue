@@ -39,6 +39,7 @@
 
 <script>
 import eventBus from '../../utils/eventBus'
+import { getUserInfo, editUserInfo, uploadImg } from '../../api/userinfo'
 export default {
   data () {
     return {
@@ -63,41 +64,28 @@ export default {
   },
   methods: {
     // 上传用户头像
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('photo', params.file)
-      this.$http({
-        url: '/user/photo',
-        method: 'PATCH',
-        data
-      }).then(result => {
-        eventBus.$emit('getUserInfo')
-        this.$message({ message: '头像上传成功', type: 'success' })
-        this.formData.photo = result.data.photo
-      })
+      let result = await uploadImg(data)
+      eventBus.$emit('getUserInfo')
+      this.$message({ message: '头像上传成功', type: 'success' })
+      this.formData.photo = result.data.photo
     },
     // 获取用户信息
-    getUserInfo () {
+    async getUserInfo () {
       this.loading = true
-      this.$http({
-        url: '/user/profile'
-      }).then(result => {
-        this.formData = result.data
-        this.loading = false
-      })
+      let result = await getUserInfo()
+      this.formData = result.data
+      this.loading = false
     },
     // 编辑用户信息
     editUserInfo () {
-      this.$refs.form.validate(isOk => {
+      this.$refs.form.validate(async isOk => {
         if (isOk) {
-          this.$http({
-            url: '/user/profile',
-            method: 'PATCH',
-            data: this.formData
-          }).then(() => {
-            eventBus.$emit('getUserInfo')
-            this.$message({ message: '更新成功', type: 'success' })
-          })
+          await editUserInfo(this.formData)
+          eventBus.$emit('getUserInfo')
+          this.$message({ message: '更新成功', type: 'success' })
         }
       })
     }

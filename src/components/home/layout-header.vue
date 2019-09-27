@@ -40,12 +40,11 @@ export default {
     })
   },
   methods: {
-    getUserMsg () {
-      this.$http({
+    async getUserMsg () {
+      let result = await this.$http({
         url: '/user/profile'
-      }).then(result => {
-        this.formData = result.data
       })
+      this.formData = result.data
     },
     handleCommand (key) {
       if (key === 'userinfo') {
@@ -63,6 +62,8 @@ export default {
           window.localStorage.clear()
           // 点击退出之后，跳转到到login页面
           this.$router.push('/login')
+        }).catch(() => {
+
         })
       }
     }
