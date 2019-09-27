@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { getPublishById, publishArticle } from '../../api/publish'
+import { getChannelMsg } from '../../api/articles'
 export default {
   data () {
     return {
@@ -96,16 +98,12 @@ export default {
     },
     // 获取从文章列表传过来的详细文章信息
     async getPublishById (articleId) {
-      let result = await this.$http({
-        url: `/articles/${articleId}`
-      })
+      let result = await getPublishById(articleId)
       this.formData = result.data
     },
     // 获取频道信息
     async getChannelMsg () {
-      let result = await this.$http({
-        url: '/channels'
-      })
+      let result = await getChannelMsg()
       this.channelslist = result.data.channels
     },
     // 发表文章
@@ -113,12 +111,7 @@ export default {
       this.$refs.form.validate(async isOk => {
         if (isOk) {
           let { articleId } = this.$route.params
-          await this.$http({
-            url: articleId ? `/articles/${articleId}` : '/articles',
-            method: articleId ? 'PUT' : 'POST',
-            params: { draft }, // （true 为草稿）（false为发布）
-            data: this.formData
-          })
+          await publishArticle(articleId, draft, this.formData)
           this.$router.push('/home/articles')
         }
       })

@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { getImg, uploadImg } from '../../api/material'
 export default {
   data () {
     return {
@@ -46,30 +47,21 @@ export default {
       this.getImage()
     },
     // 上传图片
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('image', params.file)
-      this.$http({
-        url: '/user/images',
-        method: 'post',
-        data
-      }).then(result => {
-        this.$emit('getImgUrl', result.data.url)
-      })
+      let result = await uploadImg(data)
+      this.$emit('getImgUrl', result.data.url)
     },
     // 给父级传递图片url
     sendImgUrl (url) {
       this.$emit('getImgUrl', url)
     },
     // 获取素材
-    getImage () {
-      this.$http({
-        url: '/user/images',
-        params: { collect: false, page: this.page.currentPage, per_page: this.page.page_size }
-      }).then(result => {
-        this.imglist = result.data.results
-        this.page.total = result.data.total_count
-      })
+    async  getImage () {
+      let result = await getImg(this.page, 'all')
+      this.imglist = result.data.results
+      this.page.total = result.data.total_count
     }
   },
   created () {

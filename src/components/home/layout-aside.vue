@@ -6,6 +6,8 @@
     <!-- el-menu = router属性 为true的时候启用路由 -->
     <el-menu
       router
+      :default-active="this.$route.path"
+      unique-opened
       style="width:201px"
       background-color="#353b4e"
       text-color="#adafb5"

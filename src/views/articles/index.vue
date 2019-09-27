@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import { delMsg, getChannelMsg, getArticles } from '../../api/articles'
 export default {
   data () {
     return {
@@ -102,28 +103,20 @@ export default {
     // 删除文章
     delMsg (id) {
       this.$confirm('您确定要删除此文章么？').then(async () => {
-        await this.$http({
-          url: `/articles/${id.toString()}`,
-          method: 'delete'
-        })
+        await delMsg(id)
         this.$message({ message: '删除成功', type: 'success' })
         this.getScreenMsg()
       }).catch(() => {})
     },
     // 查询频道
     async getChannelMsg () {
-      let result = await this.$http({
-        url: '/channels'
-      })
+      let result = await getChannelMsg()
       this.channelsList = result.data.channels
     },
     // 获得文章总数据
     async getArticles (params) {
       this.loading = true
-      let result = await this.$http({
-        url: '/articles',
-        params
-      })
+      let result = await getArticles(params)
       this.list = result.data.results
       this.pages.total_count = result.data.total_count
       this.loading = false

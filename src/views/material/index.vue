@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { collectAndNoCollect, delImg, uploadImg, getImg } from '../../api/material'
 export default {
   data () {
     return {
@@ -61,13 +62,7 @@ export default {
     async collectAndNoCollect (item) {
       let status = item.is_collected ? '取消收藏' : '添加收藏'
       await this.$confirm(`您要${status}此素材么？`)
-      await this.$http({
-        url: `/user/images/${item.id}`,
-        method: 'put',
-        data: {
-          collect: !item.is_collected
-        }
-      })
+      await collectAndNoCollect(item)
       this.$message({ message: `${status}成功`, type: 'success' })
       this.getImg()
     },
@@ -76,10 +71,7 @@ export default {
     // 解决方法就是在axios.config.js文件上处理bigNumber大数据的时候增加一个为空的判断
     async delImg (id) {
       await this.$confirm('您确定要删除此素材么?')
-      await this.$http({
-        url: `/user/images/${id}`,
-        method: 'delete'
-      })
+      await delImg(id)
       this.$message({ message: `素材删除成功`, type: 'success' })
       this.getImg()
     },
@@ -87,11 +79,7 @@ export default {
     async uploadImg (params) {
       let data = new FormData()
       data.append('image', params.file)
-      await this.$http({
-        url: '/user/images',
-        method: 'post',
-        data
-      })
+      await uploadImg(data)
       this.$message({ message: '上传成功', type: 'success' })
       this.getImg()
     },
@@ -111,14 +99,7 @@ export default {
       this.loading = true
       // this.activeName === 'collect' ==>true====>显示全部图片
       // this.activeName === 'collect' ==>false====>显示收藏图片
-      let result = await this.$http({
-        url: '/user/images',
-        params: {
-          collect: this.activeName === 'collect',
-          page: this.pages.page,
-          per_page: this.pages.per_page
-        }
-      })
+      let result = await getImg(this.pages, this.activeName)
       this.imglist = result.data.results
       this.pages.total_count = result.data.total_count
       this.loading = false

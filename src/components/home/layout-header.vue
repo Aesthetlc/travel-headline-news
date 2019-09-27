@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { getUserInfo } from '../../api/userinfo'
 import eventBus from '../../utils/eventBus'
 export default {
   data () {
@@ -41,9 +42,7 @@ export default {
   },
   methods: {
     async getUserMsg () {
-      let result = await this.$http({
-        url: '/user/profile'
-      })
+      let result = await getUserInfo()
       this.formData = result.data
     },
     handleCommand (key) {

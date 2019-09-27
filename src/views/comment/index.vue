@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { getComment, changeComment } from '../../api/comment'
 export default {
   data () {
     return {
@@ -72,14 +73,7 @@ export default {
     // 获取评论数据
     async getComment () {
       this.loading = true
-      let result = await this.$http({
-        url: '/articles',
-        params: {
-          response_type: 'comment',
-          page: this.pages.page,
-          per_page: this.pages.per_page
-        }
-      })
+      let result = await getComment(this.pages)
       this.tableData = result.data.results
       this.pages.total_count = result.data.total_count // 总数
       this.loading = false
@@ -100,14 +94,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        await this.$http({
-          url: '/comments/status',
-          method: 'put',
-          params: { article_id: row.id.toString() },
-          data: {
-            allow_comment: !row.comment_status
-          }
-        })
+        await changeComment(row)
         this.$message({ message: `成功${status}评论`, type: 'success' })
         this.getComment()
       })
