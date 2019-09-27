@@ -66,6 +66,11 @@ export default new Router({
       path: 'grapdata',
       component: () => import('./views/fans/grapdata')
     },
+    // 实现按需加载(粉丝列表)
+    {
+      path: 'account',
+      component: () => import('./views/fans/account')
+    },
     // 404二级路由配置
     {
       path: '*',

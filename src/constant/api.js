@@ -6,6 +6,7 @@ export default {
   API_ARTICLES: '/articles', // 文章信息
   API_CHANNELS: '/channels', // 查询频道
   API_COMMENTSSTATUS: '/comments/status', // 评论状态
-  API_USERIMAGE: '/user/images/'// 素材信息
+  API_USERIMAGE: '/user/images/', // 素材信息
+  API_FOLLOWERS: '/followers' // 粉丝列表
 
 }
