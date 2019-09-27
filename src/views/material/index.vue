@@ -58,47 +58,42 @@ export default {
   },
   methods: {
     // 取消收藏与收藏的方法
-    collectAndNoCollect (item) {
+    async collectAndNoCollect (item) {
       let status = item.is_collected ? '取消收藏' : '添加收藏'
-      this.$confirm(`您要${status}此素材么？`).then(() => {
-        this.$http({
-          url: `/user/images/${item.id}`,
-          method: 'put',
-          data: {
-            collect: !item.is_collected
-          }
-        }).then(result => {
-          this.$message({ message: `${status}成功`, type: 'success' })
-          this.getImg()
-        })
+      await this.$confirm(`您要${status}此素材么？`)
+      await this.$http({
+        url: `/user/images/${item.id}`,
+        method: 'put',
+        data: {
+          collect: !item.is_collected
+        }
       })
+      this.$message({ message: `${status}成功`, type: 'success' })
+      this.getImg()
     },
     // 删除图片素材的方法
     // 删除是没有返回值的，这里会报错实际上已经删除了，
     // 解决方法就是在axios.config.js文件上处理bigNumber大数据的时候增加一个为空的判断
-    delImg (id) {
-      this.$confirm('您确定要删除此素材么?').then(() => {
-        this.$http({
-          url: `/user/images/${id}`,
-          method: 'delete'
-        }).then(result => {
-          this.$message({ message: `素材删除成功`, type: 'success' })
-          this.getImg()
-        })
+    async delImg (id) {
+      await this.$confirm('您确定要删除此素材么?')
+      await this.$http({
+        url: `/user/images/${id}`,
+        method: 'delete'
       })
+      this.$message({ message: `素材删除成功`, type: 'success' })
+      this.getImg()
     },
     // 上传图片的方法
-    uploadImg (params) {
+    async uploadImg (params) {
       let data = new FormData()
       data.append('image', params.file)
-      this.$http({
+      await this.$http({
         url: '/user/images',
         method: 'post',
         data
-      }).then(res => {
-        this.$message({ message: '上传成功', type: 'success' })
-        this.getImg()
       })
+      this.$message({ message: '上传成功', type: 'success' })
+      this.getImg()
     },
     // 分页点击切换的时候的方法
     changeNum (newPage) {
@@ -112,22 +107,21 @@ export default {
       this.getImg()
     },
     // 获取素材图片的方法
-    getImg () {
+    async getImg () {
       this.loading = true
       // this.activeName === 'collect' ==>true====>显示全部图片
       // this.activeName === 'collect' ==>false====>显示收藏图片
-      this.$http({
+      let result = await this.$http({
         url: '/user/images',
         params: {
           collect: this.activeName === 'collect',
           page: this.pages.page,
           per_page: this.pages.per_page
         }
-      }).then(result => {
-        this.imglist = result.data.results
-        this.pages.total_count = result.data.total_count
-        this.loading = false
       })
+      this.imglist = result.data.results
+      this.pages.total_count = result.data.total_count
+      this.loading = false
     }
   },
   created () {

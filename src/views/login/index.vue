@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { loginForm } from '../../api/login'
 export default {
   data () {
     let validator = function (rule, value, callback) {
@@ -94,21 +95,15 @@ export default {
     }
   },
   methods: {
-    loginForm () {
+    loginForm (data) {
       // validate是一个方法
       // 方法中传入的一个函数
       // 两个校验参数  是否校验成功/未校验成功的字段
-      this.$refs.loginForm.validate(isOk => {
+      this.$refs.loginForm.validate(async isOk => {
         if (isOk) {
-          this.$http({
-            url: '/authorizations',
-            method: 'post',
-            data: this.formData
-          })
-            .then(res => {
-              window.localStorage.setItem('user-token', res.data.token)
-              this.$router.push('/home')
-            })
+          let result = await loginForm(this.formData)
+          window.localStorage.setItem('user-token', result.data.token)
+          this.$router.push('/home')
         }
       })
     }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <!-- 面包屑 -->
     <el-card class="first-div">
       <bread-crumb slot="header">
@@ -90,7 +90,8 @@ export default {
         perPage: 10, // 每页显示几条 默认10条
         currentPage: 1 // 当前第几页 默认第一页
       }, // 页数相关
-      channelsList: [] // 存放频道
+      channelsList: [], // 存放频道
+      loading: false
     }
   },
   methods: {
@@ -100,33 +101,32 @@ export default {
     },
     // 删除文章
     delMsg (id) {
-      this.$confirm('您确定要删除此文章么？').then(() => {
-        this.$http({
+      this.$confirm('您确定要删除此文章么？').then(async () => {
+        await this.$http({
           url: `/articles/${id.toString()}`,
           method: 'delete'
-        }).then(() => {
-          this.$message({ message: '删除成功', type: 'success' })
-          this.getScreenMsg()
         })
-      })
+        this.$message({ message: '删除成功', type: 'success' })
+        this.getScreenMsg()
+      }).catch(() => {})
     },
     // 查询频道
-    getChannelMsg () {
-      this.$http({
+    async getChannelMsg () {
+      let result = await this.$http({
         url: '/channels'
-      }).then(result => {
-        this.channelsList = result.data.channels
       })
+      this.channelsList = result.data.channels
     },
     // 获得文章总数据
-    getArticles (params) {
-      this.$http({
+    async getArticles (params) {
+      this.loading = true
+      let result = await this.$http({
         url: '/articles',
         params
-      }).then(result => {
-        this.list = result.data.results
-        this.pages.total_count = result.data.total_count
       })
+      this.list = result.data.results
+      this.pages.total_count = result.data.total_count
+      this.loading = false
     },
     // 待条件查询的
     getScreenMsg () {

@@ -70,20 +70,19 @@ export default {
       this.getComment()
     },
     // 获取评论数据
-    getComment () {
+    async getComment () {
       this.loading = true
-      this.$http({
+      let result = await this.$http({
         url: '/articles',
         params: {
           response_type: 'comment',
           page: this.pages.page,
           per_page: this.pages.per_page
         }
-      }).then(result => {
-        this.tableData = result.data.results
-        this.pages.total_count = result.data.total_count // 总数
-        this.loading = false
       })
+      this.tableData = result.data.results
+      this.pages.total_count = result.data.total_count // 总数
+      this.loading = false
     },
     // 这个位置是为了将返回的boolean值的评论状态改为打开或者关闭
     // row为行数据
@@ -100,18 +99,17 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.$http({
+      }).then(async () => {
+        await this.$http({
           url: '/comments/status',
           method: 'put',
           params: { article_id: row.id.toString() },
           data: {
             allow_comment: !row.comment_status
           }
-        }).then(result => {
-          this.$message({ message: `成功${status}评论`, type: 'success' })
-          this.getComment()
         })
+        this.$message({ message: `成功${status}评论`, type: 'success' })
+        this.getComment()
       })
     }
   },

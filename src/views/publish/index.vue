@@ -80,7 +80,9 @@ export default {
       //   }
       // })
       // 以下写法是优化之后的写法
-      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+      this.formData.cover.images = this.formData.cover.images.map((item, i) =>
+        i === index ? url : item
+      )
     },
     // 更具点击的类型 修改数据image的长度
     changeType () {
@@ -93,34 +95,31 @@ export default {
       }
     },
     // 获取从文章列表传过来的详细文章信息
-    getPublishById (articleId) {
-      this.$http({
+    async getPublishById (articleId) {
+      let result = await this.$http({
         url: `/articles/${articleId}`
-      }).then(result => {
-        this.formData = result.data
       })
+      this.formData = result.data
     },
     // 获取频道信息
-    getChannelMsg () {
-      this.$http({
+    async getChannelMsg () {
+      let result = await this.$http({
         url: '/channels'
-      }).then(result => {
-        this.channelslist = result.data.channels
       })
+      this.channelslist = result.data.channels
     },
     // 发表文章
     publishArticle (draft) {
-      this.$refs.form.validate(isOk => {
+      this.$refs.form.validate(async isOk => {
         if (isOk) {
           let { articleId } = this.$route.params
-          this.$http({
+          await this.$http({
             url: articleId ? `/articles/${articleId}` : '/articles',
             method: articleId ? 'PUT' : 'POST',
             params: { draft }, // （true 为草稿）（false为发布）
             data: this.formData
-          }).then(result => {
-            this.$router.push('/home/articles')
           })
+          this.$router.push('/home/articles')
         }
       })
     }
