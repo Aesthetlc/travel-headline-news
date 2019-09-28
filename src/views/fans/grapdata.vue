@@ -38,7 +38,7 @@ export default {
       this.updateData()
     }, 1000)
   },
-  // 页面选然后执行
+  // 页面渲染后执行
   mounted () {
     this.workChart = echarts.init(this.$refs.chartWork)
     this.studyChart = echarts.init(this.$refs.chartStudy)

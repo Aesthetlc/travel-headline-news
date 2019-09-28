@@ -6,7 +6,7 @@
     <!-- el-menu = router属性 为true的时候启用路由 -->
     <el-menu
       router
-      :default-active="this.$route.path"
+      :default-active="$route.path"
       unique-opened
       style="width:201px"
       background-color="#353b4e"
@@ -35,7 +35,7 @@
           <span>粉丝管理</span>
         </template>
         <el-menu-item index="/home/grapdata">图文数据</el-menu-item>
-        <el-menu-item index="/home/fans">粉丝概况</el-menu-item>
+        <el-menu-item index="/home/general">粉丝概况</el-menu-item>
         <el-menu-item index="/home/fancpic">粉丝画像</el-menu-item>
         <el-menu-item index="/home/account">粉丝列表</el-menu-item>
       </el-submenu>

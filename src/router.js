@@ -71,6 +71,16 @@ export default new Router({
       path: 'account',
       component: () => import('./views/fans/account')
     },
+    // 实现按需加载(粉丝概况)
+    {
+      path: 'general',
+      component: () => import('./views/fans/general')
+    },
+    // 实现按需加载(粉丝画像)
+    {
+      path: 'fancpic',
+      component: () => import('./views/fans/fancpic')
+    },
     // 404二级路由配置
     {
       path: '*',
